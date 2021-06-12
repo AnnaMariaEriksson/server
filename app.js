@@ -8,15 +8,7 @@ const port = process.env.PORT || 3000
 dotenv.config();
 bodyParser.json();
 
-
 const mysql = require("mysql");
-/*const db = mysql.createConnection({
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    port: '/run/mysqld/mysqld.sock',
-    host: '75.119.149.113'
-});*/
 
 let pool = mysql.createPool({
     user: process.env.MYSQL_USER,
@@ -24,11 +16,7 @@ let pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE,
     port: '/run/mysqld/mysqld.sock',
     host: '75.119.149.113'
-})
-
-const util = require("util");
-//db.connect = util.promisify(db.connect);
-//db.query = util.promisify(db.query);
+});
 
 app.get('/', (req, res) => res.send('Hello World!'))
 

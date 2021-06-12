@@ -1,1 +1,1 @@
-##This is a server for GreatDaneManiac apps.
+## This is a server for GreatDaneManiac apps.
