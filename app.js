@@ -1,7 +1,54 @@
-const express = require('express')
+const express = require('express');
+const path = require('path');
 const app = express()
-const port = 3000
+const dotenv = require("dotenv");
+const bodyParser = require("body-parser");
+const port = process.env.PORT || 3000
+
+dotenv.config();
+bodyParser.json();
+
+
+const mysql = require("mysql");
+/*const db = mysql.createConnection({
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: '/run/mysqld/mysqld.sock',
+    host: '75.119.149.113'
+});*/
+
+let pool = mysql.createPool({
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: '/run/mysqld/mysqld.sock',
+    host: '75.119.149.113'
+})
+
+const util = require("util");
+//db.connect = util.promisify(db.connect);
+//db.query = util.promisify(db.query);
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.get("/api/gdm/dogs", async (req, res) => {
+    let data = await pool.query("SELECT * FROM grea_db.dogs");
+    res.json(data);
+});
+
+app.listen( async () => {
+    try {
+        exports.getConnection = function(callback) {
+            pool.getConnection(function(err, conn) {
+                if(err) {
+                    return callback(err);
+                }
+                callback(err, conn);
+            });
+        };
+        console.log("server running on port " + port);
+    } catch (e) {
+        console.log(e);
+    }
+});
